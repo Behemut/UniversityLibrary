@@ -11,14 +11,14 @@ namespace UniversityLibrary.Data
 
         }
         //Creating Tables for each Model
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Author>? Authors { get; set; }
+        public DbSet<Book>? Books { get; set; }
+        public DbSet<Genre>? Genres { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<AuthorBook> AuthorBooks { get; set; }
         public DbSet<GenreBook> GenreBooks { get; set; }
-        public DbSet<Borrow> Borrows { get; set; }
-
+        public DbSet<Borrow>? Borrows { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
@@ -60,5 +60,9 @@ namespace UniversityLibrary.Data
                 .HasForeignKey(bk => bk.BookId);
 
         }
+        
+
+
+        
     }
 }
