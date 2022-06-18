@@ -19,8 +19,8 @@ namespace UniversityLibrary.Models
 
 
         //Relationships many-to-many 
-        public ICollection<GenreBook> GenresBook { get; set; }
-        public ICollection<AuthorBook> AuthorsBook { get; set; }
+        public ICollection<GenreBook> GenreBooks { get; set; }
+        public ICollection<AuthorBook> AuthorBooks { get; set; }
         public ICollection<Borrow> Borrows { get; set; }
 
 

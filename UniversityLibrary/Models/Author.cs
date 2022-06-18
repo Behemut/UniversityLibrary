@@ -10,6 +10,6 @@ namespace UniversityLibrary.Models
         public string Name { get; set; }
 
 
-        public ICollection<AuthorBook> AuthorsBook { get; set; }
+        public ICollection<AuthorBook> AuthorBooks { get; set; }
     }
 }

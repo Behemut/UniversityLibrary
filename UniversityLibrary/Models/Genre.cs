@@ -9,7 +9,7 @@ namespace UniversityLibrary.Models
         [Required]
         public string Name { get; set; }
 
-        public ICollection<GenreBook> GenresBook { get; set; }
+        public ICollection<GenreBook> GenreBooks { get; set; }
 
 
     }
