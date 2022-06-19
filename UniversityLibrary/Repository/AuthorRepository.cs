@@ -8,26 +8,31 @@ namespace UniversityLibrary.Repository
     public class AuthorRepository : IAuthorRepository
     {
         private readonly DataContext _context;
-
-
         public AuthorRepository(DataContext context)
         {
             _context = context;
         }
-
         public async Task CreateAuthor(Author author) { 
             _context.Authors.AddAsync(author);
             await _context.SaveChangesAsync();
         }
-
-        public Task DeleteAuthor(int? id)
+        public async Task DeleteAuthor(int? id)
         {
-            throw new NotImplementedException();
+            var author = await _context.Authors.FindAsync(id);
+            if (author != null)
+            {
+                _context.Remove(author);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(author));
+            }
         }
 
-        public Task<Author> GetAuthor(int? id)
+        public async Task<Author> GetAuthor(int? id)
         {
-            throw new NotImplementedException();
+            return await _context.Authors.FindAsync(id);            
         }
 
         public async Task<List<Author>> GetAuthors()
@@ -40,9 +45,10 @@ namespace UniversityLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateAuthor(Author author)
+        public async Task UpdateAuthor(Author author)
         {
-            throw new NotImplementedException();
+            _context.Update(author);
+            await _context.SaveChangesAsync();
         }
     }
 }

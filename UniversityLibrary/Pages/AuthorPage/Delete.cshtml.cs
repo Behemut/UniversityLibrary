@@ -5,58 +5,43 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using UniversityLibrary.Data;
 using UniversityLibrary.Models;
+using UniversityLibrary.Interfaces;
+using AutoMapper;
+using UniversityLibrary.Dto;
 
 namespace UniversityLibrary.Pages.AuthorPage
 {
     public class DeleteModel : PageModel
     {
-        private readonly UniversityLibrary.Data.DataContext _context;
+        private readonly IAuthorRepository authorRepository;
+        private readonly IMapper mapper;
 
-        public DeleteModel(UniversityLibrary.Data.DataContext context)
+        public DeleteModel(IAuthorRepository authorRepository, IMapper mapper)
         {
-            _context = context;
+            this.authorRepository = authorRepository;
+            this.mapper = mapper;
         }
 
         [BindProperty]
-      public Author Author { get; set; } = default!;
+      public AuthorDto Author { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Authors == null)
+            if (id == null )
             {
                 return NotFound();
             }
+            var author = mapper.Map<AuthorDto>(await authorRepository.GetAuthor(id));
+            Author = author;
 
-            var author = await _context.Authors.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (author == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Author = author;
-            }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Authors == null)
-            {
-                return NotFound();
-            }
-            var author = await _context.Authors.FindAsync(id);
 
-            if (author != null)
-            {
-                Author = author;
-                _context.Authors.Remove(Author);
-                await _context.SaveChangesAsync();
-            }
-
+            await authorRepository.DeleteAuthor(id);
             return RedirectToPage("./Index");
         }
     }
