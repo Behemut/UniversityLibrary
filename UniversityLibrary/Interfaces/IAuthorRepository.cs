@@ -4,14 +4,13 @@ namespace UniversityLibrary.Interfaces
 {
     public interface IAuthorRepository
     {
-        ICollection<Author> GetAuthors();
-        Author GetAuthor(int id);
-
-        bool CreateAuthor(Author author);
-        bool UpdateAuthor(Author author);
-        bool DeleteAuthor(Author author);
-        bool Save();    
-
+       // IAuthorRepository Authors { get; }
+        Task<List<Author>> GetAuthors();
+        Task<Author> GetAuthor(int? id);
+        Task<List<Book>> GetBooksByAuthor(int? id);
+        Task CreateAuthor(Author author);
+        Task UpdateAuthor(Author author);
+        Task DeleteAuthor(int? id);
 
     }
 }

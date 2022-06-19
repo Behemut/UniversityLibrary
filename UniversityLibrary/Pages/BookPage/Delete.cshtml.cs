@@ -4,58 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using UniversityLibrary.Data;
 using UniversityLibrary.Models;
+using UniversityLibrary.Interfaces;
 
 namespace UniversityLibrary.Pages.BookPage
 {
     public class DeleteModel : PageModel
     {
-        private readonly UniversityLibrary.Data.DataContext _context;
+        private readonly IBookRepository bookRepository;
 
-        public DeleteModel(UniversityLibrary.Data.DataContext context)
+        public DeleteModel(IBookRepository bookRepository)
         {
-            _context = context;
+            this.bookRepository = bookRepository;
         }
 
         [BindProperty]
-      public Book Book { get; set; } = default!;
+      public Book Book { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Books == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _context.Books.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Book = book;
-            }
+            Book = await bookRepository.GetBookByIdAsync(id);
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Books == null)
-            {
-                return NotFound();
-            }
-            var book = await _context.Books.FindAsync(id);
-
-            if (book != null)
-            {
-                Book = book;
-                _context.Books.Remove(Book);
-                await _context.SaveChangesAsync();
-            }
+            await bookRepository.DeleteBook(id);
 
             return RedirectToPage("./Index");
         }

@@ -3,14 +3,11 @@ namespace UniversityLibrary.Interfaces
 {
     public interface IBookRepository
     {
-        ICollection<Book> GetBooks();
-        Book GetBook(int id);
-
-        bool CreateBook(Book book);
-        bool UpdateBook(Book book);
-        bool DeleteBook(Book book);
-        bool Save();
-
+        Task <List<Book>> GetBooks();
+        Task  CreateBook(Book book);
+        Task <Book> GetBookByIdAsync(int? id);
+        Task UpdateBook(Book book);
+        Task DeleteBook(int? id);
 
     }
 }

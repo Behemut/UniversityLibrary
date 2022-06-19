@@ -5,28 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using UniversityLibrary.Data;
 using UniversityLibrary.Models;
+using UniversityLibrary.Interfaces;
+using AutoMapper;
+using UniversityLibrary.Dto;
 
 namespace UniversityLibrary.Pages.BookPage
 {
     public class IndexModel : PageModel
     {
-        private readonly UniversityLibrary.Data.DataContext _context;
-
-        public IndexModel(UniversityLibrary.Data.DataContext context)
+        private readonly IBookRepository bookRepository;
+        private readonly IMapper mapper;
+        public IndexModel(IBookRepository bookRepository, IMapper mapper)
         {
-            _context = context;
+            this.bookRepository = bookRepository;
+            this.mapper = mapper;
         }
 
-        public IList<Book> Book { get;set; } = default!;
-
+ 
+        public List<BookDto> Book { get; set; }
         public async Task OnGetAsync()
         {
-            if (_context.Books != null)
-            {
-                Book = await _context.Books.ToListAsync();
-            }
+            var books = await bookRepository.GetBooks();
+            Book = mapper.Map<List<BookDto>>(books);
+            
         }
     }
 }

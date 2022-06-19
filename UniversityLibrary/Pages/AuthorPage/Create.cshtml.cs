@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using UniversityLibrary.Models;
 using UniversityLibrary.Interfaces;
+using AutoMapper;
+using UniversityLibrary.Dto;
 
-namespace UniversityLibrary.Pages.BookPage
+namespace UniversityLibrary.Pages.AuthorPage
 {
     public class CreateModel : PageModel
     {
-        private readonly IBookRepository bookRepository;
+        private readonly IAuthorRepository authorRepository;
+        private readonly IMapper mapper;
 
-        public CreateModel(IBookRepository bookRepository)
+        public CreateModel(IAuthorRepository authorRepository, IMapper mapper)
         {
-            this.bookRepository = bookRepository;
+            this.authorRepository = authorRepository;
+            this.mapper = mapper;
         }
 
         public IActionResult OnGet()
@@ -25,20 +29,18 @@ namespace UniversityLibrary.Pages.BookPage
         }
 
         [BindProperty]
-        public Book Book { get; set; } 
+        public AuthorDto Author { get; set; }
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            /*
-          if (ModelState.IsValid )
+          if (!ModelState.IsValid || Author == null)
             {
                 return Page();
             }
-                */
-
-            await bookRepository.CreateBook(Book);
+            var authorMap = mapper.Map<Author>(Author);
+            await authorRepository.CreateAuthor(authorMap);
             return RedirectToPage("./Index");
         }
     }

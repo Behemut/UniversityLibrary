@@ -6,36 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UniversityLibrary.Data;
 using UniversityLibrary.Models;
+using UniversityLibrary.Interfaces;
 
 namespace UniversityLibrary.Pages.BookPage
 {
     public class EditModel : PageModel
     {
-        private readonly UniversityLibrary.Data.DataContext _context;
+        private readonly IBookRepository  bookRepository;
 
-        public EditModel(UniversityLibrary.Data.DataContext context)
+        public EditModel(IBookRepository bookRepository)
         {
-            _context = context;
+            this.bookRepository = bookRepository;
         }
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
+        public Book Book { get; set; } 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Books == null)
-            {
-                return NotFound();
-            }
-
-            var book =  await _context.Books.FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            Book = book;
+            Book = await bookRepository.GetBookByIdAsync(id);
             return Page();
         }
 
@@ -43,35 +33,21 @@ namespace UniversityLibrary.Pages.BookPage
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            /*
             if (ModelState.IsValid)
             {
-                return Page();
+                await bookRepository.UpdateBook(Book);
+                return RedirectToPage("./Index");
             }
-
-            _context.Attach(Book).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(Book.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            return Page();
+            */
+            await bookRepository.UpdateBook(Book);
             return RedirectToPage("./Index");
+
+
         }
 
-        private bool BookExists(int id)
-        {
-          return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
+        
     }
 }

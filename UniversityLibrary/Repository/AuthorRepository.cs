@@ -1,4 +1,5 @@
-﻿using UniversityLibrary.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityLibrary.Data;
 using UniversityLibrary.Interfaces;
 using UniversityLibrary.Models;
 
@@ -8,32 +9,38 @@ namespace UniversityLibrary.Repository
     {
         private readonly DataContext _context;
 
-        public bool CreateAuthor(Author author)
+
+        public AuthorRepository(DataContext context)
+        {
+            _context = context;
+        }
+
+        public async Task CreateAuthor(Author author) { 
+            _context.Authors.AddAsync(author);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task DeleteAuthor(int? id)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteAuthor(Author author)
+        public Task<Author> GetAuthor(int? id)
         {
             throw new NotImplementedException();
         }
 
-        public Author GetAuthor(int id)
+        public async Task<List<Author>> GetAuthors()
+        {
+            return await _context.Authors.ToListAsync();
+        }
+
+        public Task<List<Book>> GetBooksByAuthor(int? id)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<Author> GetAuthors()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool UpdateAuthor(Author author)
+        public Task UpdateAuthor(Author author)
         {
             throw new NotImplementedException();
         }

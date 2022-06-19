@@ -5,38 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using UniversityLibrary.Data;
 using UniversityLibrary.Models;
+using UniversityLibrary.Interfaces;
+
 
 namespace UniversityLibrary.Pages.BookPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly UniversityLibrary.Data.DataContext _context;
+        private readonly IBookRepository bookRepository;
 
-        public DetailsModel(UniversityLibrary.Data.DataContext context)
+        public DetailsModel(IBookRepository bookRepository)
         {
-            _context = context;
+            this.bookRepository = bookRepository;
         }
 
-      public Book Book { get; set; } = default!; 
+        public Book Book { get; set; } 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Books == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _context.Books.FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Book = book;
-            }
+            Book = await bookRepository.GetBookByIdAsync(id);
             return Page();
         }
     }
