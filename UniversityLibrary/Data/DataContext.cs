@@ -5,23 +5,18 @@ namespace UniversityLibrary.Data
 {
     public class DataContext : DbContext
     {
-
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-
-        }
+        {   }
         //Creating Tables for each Model
         public DbSet<Author>? Authors { get; set; }
         public DbSet<Book>? Books { get; set; }
         public DbSet<Genre>? Genres { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<AuthorBook> AuthorBooks { get; set; }
-        public DbSet<GenreBook> GenreBooks { get; set; }
+        public DbSet<User>? Users { get; set; }
+        public DbSet<AuthorBook>? AuthorBooks { get; set; }
+        public DbSet<GenreBook>? GenreBooks { get; set; }
         public DbSet<Borrow>? Borrows { get; set; }
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
             //Relationship Many-to-Many Authors -> Books 
             modelBuilder.Entity<AuthorBook>()
                 .HasKey(ab => new { ab.AuthorId, ab.BookId });
@@ -33,7 +28,6 @@ namespace UniversityLibrary.Data
                 .HasOne(b => b.Book)
                 .WithMany(ab => ab.AuthorBooks)
                 .HasForeignKey(b => b.BookId);
-
 
             //Relationship Many-to-Many Genres -> Books 
             modelBuilder.Entity<GenreBook>()
@@ -60,9 +54,5 @@ namespace UniversityLibrary.Data
                 .HasForeignKey(bk => bk.BookId);
 
         }
-        
-
-
-        
     }
 }

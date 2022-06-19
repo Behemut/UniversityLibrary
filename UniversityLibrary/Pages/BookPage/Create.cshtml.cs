@@ -12,9 +12,9 @@ namespace UniversityLibrary.Pages.BookPage
 {
     public class CreateModel : PageModel
     {
-        private readonly UniversityLibrary.Data.DataContext _context;
+        private readonly DataContext _context;
 
-        public CreateModel(UniversityLibrary.Data.DataContext context)
+        public CreateModel(DataContext context)
         {
             _context = context;
         }
@@ -25,21 +25,19 @@ namespace UniversityLibrary.Pages.BookPage
         }
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
+        public Book Book { get; set; }
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Books == null || Book == null)
+          if (ModelState.IsValid)
             {
                 return Page();
             }
-
             _context.Books.Add(Book);
             await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index");            
         }
     }
 }

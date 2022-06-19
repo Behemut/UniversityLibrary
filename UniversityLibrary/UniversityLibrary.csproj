@@ -8,8 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Repository\" />
+    <Folder Include="Pages\AuthorPage\" />
+    <Folder Include="Pages\GenrePage\" />
+    <Folder Include="Pages\BorrowPage\" />
   </ItemGroup>
 
   <ItemGroup>
