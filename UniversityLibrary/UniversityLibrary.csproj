@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\BorrowPage\" />
-    <Folder Include="Pages\GenrePage\" />
   </ItemGroup>
 
   <ItemGroup>

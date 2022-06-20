@@ -3,13 +3,12 @@ namespace UniversityLibrary.Interfaces
 {
     public interface IGenreRepository
     {
-        IEnumerable<Genre> GetAllGenres();
-        Genre GetGenreById(int id);
-        IEnumerable<Book> GetBooksByGenre(int Genreid);
-        bool CreateGenre(Genre genre);
-        bool UpdateGenre(Genre genre);
-        bool DeleteGenre(int id);
-        bool Save();
+        Task<List<Genre>> GetGenres();
+        Task<Genre> GetGenre(int? id);
+        //Task<List<Book>> GetBooksByAuthor(int? id);
+        Task CreateGenre(Genre genre);
+        Task UpdateGenre(Genre genre);
+        Task DeleteGenre(int? id);
 
     }
 }
