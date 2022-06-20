@@ -13,10 +13,18 @@ namespace UniversityLibrary.Repository
             _context = context;
         }
 
-        public async Task CreateBook(Book book)
+        public async Task CreateBook(Book book, int? authorId)
         {
+            var author = await _context.Authors.FindAsync(authorId);
+            var authorBooks = new AuthorBook()
+            {
+                Author = author,
+                Book = book
+            };
+            _context.AddAsync(authorBooks);
             _context.Books.AddAsync(book);
             await _context.SaveChangesAsync();
+            
         }
 
         public async Task DeleteBook(int? id)

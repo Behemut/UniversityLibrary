@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using UniversityLibrary.Models;
 using UniversityLibrary.Interfaces;
+using UniversityLibrary.Data;
+
 using AutoMapper;
 using UniversityLibrary.Dto;
 
@@ -14,19 +16,33 @@ namespace UniversityLibrary.Pages.BookPage
 {
     public class CreateModel : PageModel
     {
+        private readonly DataContext context;
         private readonly IBookRepository bookRepository;
+        private readonly IAuthorRepository authorRepository;
         private readonly IMapper mapper;
 
-        public CreateModel(IBookRepository bookRepository,IMapper mapper)
+        public CreateModel(IBookRepository bookRepository,IAuthorRepository authorRepository,IMapper mapper, DataContext context)
         {
             this.bookRepository = bookRepository;
+            this.authorRepository = authorRepository;
             this.mapper = mapper;
+            this.context = context;
         }
 
-        public IActionResult OnGet()
+        [BindProperty]
+        public int authorId { get; set; }
+
+        [BindProperty]
+        public List<SelectListItem> Options { get; set; }
+        public void OnGet()
         {
-            return Page();
+            Options = context.Authors.Select(a => new SelectListItem
+            {
+                Text = a.Name,
+                Value = a.Id.ToString()
+            }).ToList();
         }
+
 
         [BindProperty]
         public BookDto Book { get; set; } 
@@ -39,8 +55,12 @@ namespace UniversityLibrary.Pages.BookPage
             {
                 return Page();
             }
+            var number = Request.Form["authorId"];
+            authorId = Convert.ToInt32(number);
+
+
             var bookMap = mapper.Map<Book>(Book);
-            await bookRepository.CreateBook(bookMap);
+            await bookRepository.CreateBook(bookMap, authorId);
             return RedirectToPage("./Index");
         }
 
