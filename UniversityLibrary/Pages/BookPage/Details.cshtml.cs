@@ -28,10 +28,7 @@ namespace UniversityLibrary.Pages.BookPage
         {
 
             Author = await bookRepository.GetAuthorsByBook(id);
-
             Genre = await bookRepository.GetGenresByBook(id);
-
-
             Book = await bookRepository.GetBookByIdAsync(id);
             return Page();
         }

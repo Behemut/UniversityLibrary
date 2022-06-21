@@ -6,24 +6,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using UniversityLibrary.Models;
 using UniversityLibrary.Interfaces;
+using AutoMapper;
+using UniversityLibrary.Dto;
 
 namespace UniversityLibrary.Pages.BookPage
 {
     public class DeleteModel : PageModel
     {
         private readonly IBookRepository bookRepository;
-
-        public DeleteModel(IBookRepository bookRepository)
+        private readonly IMapper mapper;
+        public DeleteModel(IBookRepository bookRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
+            this.mapper = mapper;
         }
 
         [BindProperty]
-      public Book Book { get; set; }
+      public BookDto Book { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            Book = await bookRepository.GetBookByIdAsync(id);
+            var book = mapper.Map<BookDto>(await bookRepository.GetBookByIdAsync(id));
+            Book = book;
             return Page();
         }
 
