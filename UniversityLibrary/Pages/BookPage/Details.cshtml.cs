@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using UniversityLibrary.Models;
 using UniversityLibrary.Interfaces;
-
+using UniversityLibrary.Dto;
 
 namespace UniversityLibrary.Pages.BookPage
 {
@@ -20,10 +20,18 @@ namespace UniversityLibrary.Pages.BookPage
             this.bookRepository = bookRepository;
         }
 
-        public Book Book { get; set; } 
+        public Book Book { get; set; }
+        public List<Author> Author { get; set; }
+        public List<Genre> Genre { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
+            Author = await bookRepository.GetAuthorsByBook(id);
+
+            Genre = await bookRepository.GetGenresByBook(id);
+
+
             Book = await bookRepository.GetBookByIdAsync(id);
             return Page();
         }

@@ -12,19 +12,33 @@ namespace UniversityLibrary.Repository
         {
             _context = context;
         }
-
-        public async Task CreateBook(Book book, int? authorId)
+        public async Task CreateBook(Book book, int[]? SelectedAuthors, int[]? SelectedGenres)
         {
-            var author = await _context.Authors.FindAsync(authorId);
-            var authorBooks = new AuthorBook()
+            foreach (var item in SelectedGenres)
             {
-                Author = author,
-                Book = book
-            };
-            _context.AddAsync(authorBooks);
+                var genre = await _context.Genres.FindAsync(item);
+                var genreBooks = new GenreBook()
+                {
+                    Book = book,
+                    Genre = genre
+
+                };
+                _context.AddAsync(genreBooks);
+
+            }
+            foreach (var item in SelectedAuthors)
+            {
+                var author = await _context.Authors.FindAsync(item);
+                var authorBooks = new AuthorBook()
+                {
+                    Author = author,
+                    Book = book
+                };
+                _context.AddAsync(authorBooks);
+
+            }
             _context.Books.AddAsync(book);
-            await _context.SaveChangesAsync();
-            
+            await _context.SaveChangesAsync();         
         }
 
         public async Task DeleteBook(int? id)

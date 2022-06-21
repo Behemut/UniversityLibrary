@@ -31,6 +31,52 @@
         </dd>
     </dl>
 </div>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Autores del libro
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Author) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Generos del libro 
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Genre) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Book?.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>

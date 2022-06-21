@@ -16,8 +16,6 @@ namespace UniversityLibrary.Models
         [Required]
         public int Stock { get; set; }
 
-
-
         //Relationships many-to-many 
         public ICollection<GenreBook> GenreBooks { get; set; }
         public ICollection<AuthorBook> AuthorBooks { get; set; }

@@ -4,7 +4,7 @@ namespace UniversityLibrary.Interfaces
     public interface IBookRepository
     {
         Task <List<Book>> GetBooks();
-        Task  CreateBook(Book book, int? authorId);
+        Task  CreateBook(Book book, int[]? SelectedAuthors, int[]? SelectedGenres);
         Task <Book> GetBookByIdAsync(int? id);
 
         Task<List<Genre>> GetGenresByBook(int? bookId);
