@@ -30,23 +30,19 @@
             </div>
 
              <div class="form-group">
-                <label class="control-label">Autores</label>
+                <label class="control-label">Escoga autores del libro:</label>
                  <select multiple="multiple" asp-for="SelectedAuthors"  class="selectpicker form-control" asp-items="Model.OptionsAuthors" >
                     <option value="">Seleccionar autor</option>
                  </select>
              </div>
 
              <div class="form-group">
-                <label class="control-label">Autores</label>
+                <label class="control-label">Escoga generos del libro:</label>
                  <select asp-for="SelectedGenres" multiple="multiple"  class="selectpicker form-control" asp-items="Model.OptionsGenres"></select>
              </div>
-
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-
-            
+            </div>           
         </form>
     </div>
 </div>

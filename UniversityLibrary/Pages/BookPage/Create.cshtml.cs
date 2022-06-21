@@ -37,7 +37,6 @@ namespace UniversityLibrary.Pages.BookPage
         {
             OptionsAuthors = new SelectList(context.Authors, nameof(Author.Id), nameof(Author.Name));
             OptionsGenres = new SelectList(context.Genres, nameof(Genre.Id), nameof(Genre.Name));
-            
         }
         [BindProperty]
         public BookDto Book { get; set; } 
@@ -48,13 +47,9 @@ namespace UniversityLibrary.Pages.BookPage
             {
                 return Page();
             }
-   
-            
             var bookMap = mapper.Map<Book>(Book);
-            await bookRepository.CreateBook(bookMap, 1);
+            await bookRepository.CreateBook(bookMap, SelectedAuthors, SelectedGenres);
             return RedirectToPage("./Index");
         }
-
-        
     }
 }
