@@ -20,7 +20,6 @@ namespace UniversityLibrary.Pages.BookPage
         private readonly IBookRepository bookRepository;
         private readonly IAuthorRepository authorRepository;
         private readonly IMapper mapper;
-
         public CreateModel(IBookRepository bookRepository,IAuthorRepository authorRepository,IMapper mapper, DataContext context)
         {
             this.bookRepository = bookRepository;
@@ -28,26 +27,19 @@ namespace UniversityLibrary.Pages.BookPage
             this.mapper = mapper;
             this.context = context;
         }
-
         [BindProperty]
         public int authorId { get; set; }
-
-        [BindProperty]
-        public List<SelectListItem> Options { get; set; }
+        public List<SelectListItem> Authors { get; set; }
         public void OnGet()
         {
-            Options = context.Authors.Select(a => new SelectListItem
+            Authors = context.Authors.Select(a => new SelectListItem
             {
                 Text = a.Name,
                 Value = a.Id.ToString()
             }).ToList();
         }
-
-
         [BindProperty]
         public BookDto Book { get; set; } 
-        
-
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -57,8 +49,6 @@ namespace UniversityLibrary.Pages.BookPage
             }
             var number = Request.Form["authorId"];
             authorId = Convert.ToInt32(number);
-
-
             var bookMap = mapper.Map<Book>(Book);
             await bookRepository.CreateBook(bookMap, authorId);
             return RedirectToPage("./Index");

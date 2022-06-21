@@ -18,8 +18,8 @@ namespace UniversityLibrary.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Relationship Many-to-Many Authors -> Books 
-            modelBuilder.Entity<AuthorBook>()
-                .HasKey(ab => new { ab.AuthorId, ab.BookId });
+          
+           
             modelBuilder.Entity<AuthorBook>()
                 .HasOne(a => a.Author)
                 .WithMany(ab => ab.AuthorBooks)
@@ -31,8 +31,6 @@ namespace UniversityLibrary.Data
 
             //Relationship Many-to-Many Genres -> Books 
             modelBuilder.Entity<GenreBook>()
-                .HasKey(gb => new { gb.BookId, gb.GenreId });
-            modelBuilder.Entity<GenreBook>()
                 .HasOne(b => b.Book)
                 .WithMany(gb => gb.GenreBooks)
                 .HasForeignKey(b => b.BookId);
@@ -42,8 +40,6 @@ namespace UniversityLibrary.Data
                 .HasForeignKey(g => g.GenreId);
 
             //Relationship Many-to-Many Users -> Books 
-            modelBuilder.Entity<Borrow>()
-                .HasKey(br => new { br.UserId, br.BookId });
             modelBuilder.Entity<Borrow>()
                 .HasOne(u => u.User)
                 .WithMany(br => br.Borrows)

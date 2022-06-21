@@ -8,43 +8,46 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UniversityLibrary.Models;
 using UniversityLibrary.Interfaces;
+using UniversityLibrary.Data;
 
 namespace UniversityLibrary.Pages.BookPage
 {
     public class EditModel : PageModel
     {
         private readonly IBookRepository  bookRepository;
-
-        public EditModel(IBookRepository bookRepository)
+        private readonly DataContext context;
+        
+        public EditModel(IBookRepository bookRepository, DataContext context)
         {
             this.bookRepository = bookRepository;
+            this.context = context;
         }
 
         [BindProperty]
-        public Book Book { get; set; } 
+        public Book Book { get; set; }
+
+
+        [BindProperty]
+        public int[] SelectedAuthors { get; set; }
+        public SelectList OptionsAuthors { get; set; }
+        [BindProperty]
+        public int[] SelectedGenres { get; set; }
+        public SelectList OptionsGenres { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             Book = await bookRepository.GetBookByIdAsync(id);
+            
+            OptionsAuthors = new SelectList(context.Authors, nameof(Author.Id), nameof(Author.Name));
+            OptionsGenres = new SelectList(context.Genres, nameof(Genre.Id), nameof(Genre.Name));
+
             return Page();
         }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
-        {
-            /*
-            if (ModelState.IsValid)
-            {
-                await bookRepository.UpdateBook(Book);
-                return RedirectToPage("./Index");
-            }
-            return Page();
-            */
-            await bookRepository.UpdateBook(Book);
+        { 
+            await bookRepository.UpdateBook(Book,  SelectedAuthors, SelectedGenres);
             return RedirectToPage("./Index");
-
-
         }
 
 

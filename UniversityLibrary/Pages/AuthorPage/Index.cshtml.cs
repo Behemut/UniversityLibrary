@@ -28,18 +28,8 @@ namespace UniversityLibrary.Pages.AuthorPage
 
         public async Task OnGetAsync()
         {
-            /*
-            if (_context.Authors != null)
-            {
-                Author = await _context.Authors.ToListAsync();
-            }*/
-
             var authors = await authorRepository.GetAuthors();
             Author = mapper.Map<List<AuthorDto>>(authors);
-
-
-
-
         }
     }
 }

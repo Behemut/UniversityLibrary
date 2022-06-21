@@ -49,11 +49,43 @@ namespace UniversityLibrary.Repository
         {
             return await _context.Books.ToListAsync();
         }
-
-        public async Task UpdateBook (Book book)
+        public async Task UpdateBook(Book book, int[]? SelectedAuthors, int[]? SelectedGenres)
         {
             _context.Update(book);
+            foreach (var item in SelectedGenres)
+            {
+                var genre= await _context.Genres.FindAsync(item);
+                var genreBooks = new GenreBook()
+                {
+                    Book = book,
+                    Genre = genre
+                   
+                };
+                _context.AddAsync(genreBooks);
+                
+            }
+            foreach (var item in SelectedAuthors)
+            {
+                var author = await _context.Authors.FindAsync(item);
+                var authorBooks = new AuthorBook()
+                {
+                    Author = author,
+                    Book = book
+                };
+                _context.AddAsync(authorBooks);
+
+            }
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Author>> GetAuthorsByBook(int? bookId)
+        {
+            return await _context.Authors.Where(a => a.AuthorBooks.Any(ab => ab.BookId == bookId)).ToListAsync();
+        }
+
+        public async Task<List<Genre>> GetGenresByBook(int? bookId)
+        {
+            return await _context.Genres.Where(g => g.GenreBooks.Any(gb => gb.BookId == bookId)).ToListAsync();
         }
     }
 }

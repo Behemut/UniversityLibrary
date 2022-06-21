@@ -6,7 +6,10 @@ namespace UniversityLibrary.Interfaces
         Task <List<Book>> GetBooks();
         Task  CreateBook(Book book, int? authorId);
         Task <Book> GetBookByIdAsync(int? id);
-        Task UpdateBook(Book book);
+
+        Task<List<Genre>> GetGenresByBook(int? bookId);
+        Task<List<Author>> GetAuthorsByBook(int? bookId);
+        Task UpdateBook(Book book, int[]? SelectedAuthors, int[]? SelectedGenres);
         Task DeleteBook(int? id);
 
     }
